@@ -63,81 +63,24 @@
           </div>
         </div>
 
-        <section class="one-cikan" aria-label="Şu an okuyorum">
-          <div class="kapak kapak-buyuk" style="--kapak: #7FA3B8; --serit: #64889D" aria-hidden="true"></div>
+                <section id="su-an-okuyorum" class="one-cikan" aria-label="Şu an okuyorum" hidden>
+          <div class="kapak kapak-buyuk" aria-hidden="true"></div>
           <div class="one-cikan-metin">
             <span class="rozet">ŞU AN OKUYORUM</span>
-            <h2>[KİTAP ADI]</h2>
-            <p class="soluk">[YAZAR]</p>
+            <h2></h2>
+            <p class="soluk yazar"></p>
             <div class="ilerleme">
-              <div class="ilerleme-cubuk" role="progressbar" aria-label="Okuma ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="40">
-                <div class="ilerleme-dolum" style="width: 40%"></div>
+              <div class="ilerleme-cubuk" role="progressbar" aria-label="Okuma ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="ilerleme-dolum" style="width: 0%"></div>
               </div>
-              <span>%40</span>
+              <span class="ilerleme-yuzde">%0</span>
             </div>
-            <p class="metin">[Şimdilik ne düşünüyorsun? Bir iki cümle.]</p>
+            <p class="metin okunan-not"></p>
           </div>
         </section>
 
         <ul class="kartlar" id="kitap-listesi">
-          <li class="kitap" data-tur="okudum">
-            <div class="kapak" style="--kapak: #7A9E7E; --serit: #5E8263" aria-hidden="true"></div>
-            <div class="kitap-bilgi">
-              <span class="durum-cip" style="--renk: #E8F1E0">Okudum</span>
-              <h3>[KİTAP ADI]</h3>
-              <span class="soluk">[YAZAR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 5 kalp">♥♥♥♥♥</span>
-              <p class="not">[Tek cümlelik notun]</p>
-            </div>
-          </li>
-          <li class="kitap" data-tur="okudum">
-            <div class="kapak" style="--kapak: #D98FA0; --serit: #BF7386" aria-hidden="true"></div>
-            <div class="kitap-bilgi">
-              <span class="durum-cip" style="--renk: #E8F1E0">Okudum</span>
-              <h3>[KİTAP ADI]</h3>
-              <span class="soluk">[YAZAR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 4 kalp">♥♥♥♥♡</span>
-              <p class="not">[Tek cümlelik notun]</p>
-            </div>
-          </li>
-          <li class="kitap" data-tur="okudum">
-            <div class="kapak" style="--kapak: #C8743A; --serit: #A85C2A" aria-hidden="true"></div>
-            <div class="kitap-bilgi">
-              <span class="durum-cip" style="--renk: #E8F1E0">Okudum</span>
-              <h3>[KİTAP ADI]</h3>
-              <span class="soluk">[YAZAR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 5 kalp">♥♥♥♥♥</span>
-              <p class="not">[Tek cümlelik notun]</p>
-            </div>
-          </li>
-          <li class="kitap" data-tur="okuyacagim">
-            <div class="kapak" style="--kapak: #C9A04A; --serit: #AA8532" aria-hidden="true"></div>
-            <div class="kitap-bilgi">
-              <span class="durum-cip" style="--renk: #FBEFD4">Okuyacağım</span>
-              <h3>[KİTAP ADI]</h3>
-              <span class="soluk">[YAZAR]</span>
-              <p class="not">[Neden merak ediyorsun?]</p>
-            </div>
-          </li>
-          <li class="kitap" data-tur="okudum">
-            <div class="kapak" style="--kapak: #7D5A6E; --serit: #634556" aria-hidden="true"></div>
-            <div class="kitap-bilgi">
-              <span class="durum-cip" style="--renk: #E8F1E0">Okudum</span>
-              <h3>[KİTAP ADI]</h3>
-              <span class="soluk">[YAZAR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 3 kalp">♥♥♥♡♡</span>
-              <p class="not">[Tek cümlelik notun]</p>
-            </div>
-          </li>
-          <li class="kitap" data-tur="okuyacagim">
-            <div class="kapak" style="--kapak: #A9C6D6; --serit: #7FA3B8" aria-hidden="true"></div>
-            <div class="kitap-bilgi">
-              <span class="durum-cip" style="--renk: #FBEFD4">Okuyacağım</span>
-              <h3>[KİTAP ADI]</h3>
-              <span class="soluk">[YAZAR]</span>
-              <p class="not">[Neden merak ediyorsun?]</p>
-            </div>
-          </li>
+          <li class="bos">Yükleniyor…</li>
         </ul>
 
       </div>
@@ -153,6 +96,8 @@
     </nav>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

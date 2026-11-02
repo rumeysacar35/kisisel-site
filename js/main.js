@@ -559,6 +559,7 @@ function galeriKur() {
     buyukGorsel.innerHTML = kucukGorsel.innerHTML;
     pencere.querySelector('.buyuk-yazi').textContent = kaynak.querySelector('.foto-yazi').textContent;
     pencere.querySelector('.sayac').textContent = `${simdiki + 1} / ${fotolar.length}`;
+    pencere.querySelector('.buyuk-hikaye').textContent = kaynak.dataset.hikaye || '';
   }
 
   fotolar.forEach((foto, sira) => {
@@ -589,36 +590,227 @@ function formuKur() {
   if (!form) return;
 
   const tamam = document.getElementById('mektup-tamam');
-  const BENIM_EPOSTAM = 'rumeysacar35@gmail.com';
+  const hata = document.getElementById('mektup-hata');
+  const buton = form.querySelector('button[type="submit"]');
 
-  form.addEventListener('submit', olay => {
-    olay.preventDefault();   // sayfanın yenilenmesini engelle
+  form.addEventListener('submit', async olay => {
+    olay.preventDefault();
+    hata.textContent = '';
 
-    const ad = form.ad.value.trim();
-    const eposta = form.eposta.value.trim();
-    const mesaj = form.mesaj.value.trim();
+    // Tuzak alan doluysa bu bir bot: sessizce "gönderildi" göster ama kaydetme
+    if (form.web.value) {
+      form.hidden = true;
+      tamam.hidden = false;
+      return;
+    }
 
-    // Ziyaretçinin e-posta uygulamasında hazır bir mektup aç
-    const konu = `Siten üzerinden mektup: ${ad}`;
-    const govde = `${mesaj}\n\n— ${ad} (${eposta})`;
-    window.location.href =
-      `mailto:${BENIM_EPOSTAM}?subject=${encodeURIComponent(konu)}&body=${encodeURIComponent(govde)}`;
+    buton.disabled = true;
+    buton.textContent = 'Gönderiliyor…';
 
+    const { error } = await db.from('mesajlar').insert({
+      ad: form.ad.value.trim(),
+      eposta: form.eposta.value.trim(),
+      mesaj: form.mesaj.value.trim()
+    });
+
+    buton.disabled = false;
+    buton.textContent = 'Mektubu gönder ›';
+
+    if (error) {
+      console.error(error);
+      hata.textContent = 'Mektup şu an gönderilemedi. Bana doğrudan rumeysacar35@gmail.com adresinden yazabilirsin.';
+      return;
+    }
+
+    form.reset();
     form.hidden = true;
     tamam.hidden = false;
   });
 
   document.getElementById('yeni-mektup').addEventListener('click', () => {
-    form.reset();
     tamam.hidden = true;
     form.hidden = false;
   });
 }
+// ===== Supabase yardımcıları =====
+
+// Veritabanından gelen metni HTML'e güvenle yerleştirmek için özel karakterleri kaçırır
+function kacir(metin) {
+  return String(metin ?? '').replace(/[&<>"']/g, k => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[k]
+  ));
+}
+
+function kalpDizisi(puan) {
+  const p = Math.max(0, Math.min(5, puan || 0));
+  return '♥'.repeat(p) + '♡'.repeat(5 - p);
+}
+
+// Bir tablonun bütün satırlarını getirir; hata olursa null döner
+async function getir(tablo, siralama = 'created_at', artan = false) {
+  if (typeof db === 'undefined') return null;
+  const { data, error } = await db.from(tablo).select('*').order(siralama, { ascending: artan });
+  if (error) {
+    console.error(tablo, error);
+    return null;
+  }
+  return data;
+}
+
+// ===== Oda: "Şu an okuyorum / izliyorum" =====
+async function odaDurumlariGetir() {
+  const kitapKutu = document.getElementById('durum-kitap');
+  const diziKutu = document.getElementById('durum-dizi');
+  if (!kitapKutu) return;
+
+  const [kitaplar, izlenenler] = await Promise.all([getir('kitaplar'), getir('izlenenler')]);
+  const okunan = kitaplar?.find(k => k.durum === 'okuyor');
+  const izlenen = izlenenler?.find(i => i.durum === 'izliyor');
+
+  if (okunan) {
+    kitapKutu.textContent = `▸ Şu an okuyorum: ${okunan.ad}`;
+    kitapKutu.hidden = false;
+  }
+  if (izlenen) {
+    diziKutu.textContent = `▸ İzliyorum: ${izlenen.ad}`;
+    diziKutu.hidden = false;
+  }
+}
+
+// ===== Okuduklarım =====
+async function kitaplariGetir() {
+  const liste = document.getElementById('kitap-listesi');
+  if (!liste) return;
+
+  const kitaplar = await getir('kitaplar');
+  if (!kitaplar) {
+    liste.innerHTML = '<li class="bos">Kitaplar şu an yüklenemedi.</li>';
+    return;
+  }
+
+  // Öne çıkan kart: şu an okunan kitap
+  const okunan = kitaplar.find(k => k.durum === 'okuyor');
+  if (okunan) {
+    const kutu = document.getElementById('su-an-okuyorum');
+    const yuzde = okunan.ilerleme || 0;
+    kutu.querySelector('.kapak').style.setProperty('--kapak', okunan.renk || '#7FA3B8');
+    kutu.querySelector('h2').textContent = okunan.ad;
+    kutu.querySelector('.yazar').textContent = okunan.yazar || '';
+    kutu.querySelector('.ilerleme-dolum').style.width = `${yuzde}%`;
+    kutu.querySelector('.ilerleme-yuzde').textContent = `%${yuzde}`;
+    kutu.querySelector('.ilerleme-cubuk').setAttribute('aria-valuenow', yuzde);
+    kutu.querySelector('.okunan-not').textContent = okunan.notu || '';
+    kutu.hidden = false;
+  }
+
+  // Diğer kitaplar
+  const digerleri = kitaplar.filter(k => k.durum !== 'okuyor');
+  if (!digerleri.length) {
+    liste.innerHTML = '<li class="bos">Henüz kitap eklenmedi.</li>';
+    return;
+  }
+  liste.innerHTML = digerleri.map(k => `
+    <li class="kitap" data-tur="${k.durum}">
+      <div class="kapak" style="--kapak: ${kacir(k.renk || '#7FA3B8')}" aria-hidden="true"></div>
+      <div class="kitap-bilgi">
+        <span class="durum-cip" style="--renk: ${k.durum === 'okudum' ? '#E8F1E0' : '#FBEFD4'}">
+          ${k.durum === 'okudum' ? 'Okudum' : 'Okuyacağım'}
+        </span>
+        <h3>${kacir(k.ad)}</h3>
+        <span class="soluk">${kacir(k.yazar)}</span>
+        ${k.durum === 'okudum' && k.puan
+          ? `<span class="kalpler" aria-label="5 üzerinden ${k.puan} kalp">${kalpDizisi(k.puan)}</span>`
+          : ''}
+        ${k.notu ? `<p class="not">${kacir(k.notu)}</p>` : ''}
+      </div>
+    </li>`).join('');
+}
+
+// ===== İzlediklerim =====
+async function izlenenleriGetir() {
+  const liste = document.getElementById('izleme-listesi');
+  if (!liste) return;
+
+  const hepsi = await getir('izlenenler');
+  if (!hepsi) {
+    liste.innerHTML = '<li class="bos">Liste şu an yüklenemedi.</li>';
+    return;
+  }
+
+  const simdi = hepsi.find(i => i.durum === 'izliyor');
+  if (simdi) {
+    const kutu = document.getElementById('bu-ara-izliyorum');
+    kutu.querySelector('.sahne').innerHTML = simdi.gorsel_url
+      ? `<img src="${kacir(simdi.gorsel_url)}" alt="">`
+      : '';
+    kutu.querySelector('h2').textContent = simdi.ad;
+    kutu.querySelector('.nerede').textContent = [simdi.nerede, simdi.platform].filter(Boolean).join(' · ');
+    kutu.querySelector('.izlenen-not').textContent = simdi.notu || '';
+    kutu.hidden = false;
+  }
+
+  const digerleri = hepsi.filter(i => i.durum !== 'izliyor');
+  if (!digerleri.length) {
+    liste.innerHTML = '<li class="bos">Henüz bir şey eklenmedi.</li>';
+    return;
+  }
+  liste.innerHTML = digerleri.map(i => `
+    <li class="afis-kart" data-tur="${i.tur}">
+      <div class="afis" style="--gok: ${kacir(i.renk || '#EDB7B9')}; --gunes: #F8E3A4; --zemin: #A9C4A0" aria-hidden="true">
+        ${i.gorsel_url ? `<img src="${kacir(i.gorsel_url)}" alt="">` : ''}
+        <span class="tur-etiketi">${i.tur === 'dizi' ? 'Dizi' : 'Film'}</span>
+      </div>
+      <div class="afis-bilgi">
+        <h3>${kacir(i.ad)}</h3>
+        <span class="soluk">${kacir([i.yil, i.kategori].filter(Boolean).join(' · '))}</span>
+        ${i.puan ? `<span class="kalpler" aria-label="5 üzerinden ${i.puan} kalp">${kalpDizisi(i.puan)}</span>` : ''}
+        ${i.notu ? `<p class="not">${kacir(i.notu)}</p>` : ''}
+      </div>
+    </li>`).join('');
+}
+
+// ===== Fotoğraflar =====
+async function fotograflariGetir() {
+  const galeri = document.getElementById('galeri');
+  if (!galeri) return;
+
+  const fotolar = await getir('fotograflar', 'sira', true);
+  if (!fotolar) {
+    galeri.innerHTML = '<li class="bos">Fotoğraflar şu an yüklenemedi.</li>';
+    return;
+  }
+  if (!fotolar.length) {
+    galeri.innerHTML = '<li class="bos">Henüz fotoğraf eklenmedi.</li>';
+    return;
+  }
+
+  const egimler = [-3, 2, -1.5, 2.5, -2, 1, -2.5, 1.5, -1];
+  const bantlar = ['#E8A6B4', '#A9C6D6', '#F3D36B'];
+  galeri.innerHTML = fotolar.map((f, i) => `
+    <li>
+      <button class="polaroid"
+              style="--egim: ${egimler[i % egimler.length]}deg; --bant: ${bantlar[i % bantlar.length]}"
+              data-hikaye="${kacir(f.hikaye)}"
+              aria-label="${kacir(f.yer || 'Fotoğraf')}, büyüt">
+        <span class="foto"><img src="${kacir(f.gorsel_url)}" alt="${kacir(f.yer)}" loading="lazy"></span>
+        <span class="foto-yazi">${kacir([f.yer, f.tarih].filter(Boolean).join(' · '))}</span>
+      </button>
+    </li>`).join('');
+
+  galeriKur();   // polaroidler oluştuktan sonra tıklamaları bağla
+}
+
 // ===== Projelerim =====
-function projeleriKur() {
+async function projeleriKur() {
   const liste = document.getElementById('proje-listesi');
   const detay = document.getElementById('proje-detay');
-  if (!liste || typeof projeler === 'undefined') return;
+  if (!liste) return;
+
+  const projeler = await getir('projeler', 'sira', true);
+  if (!projeler || !projeler.length) {
+    detay.innerHTML = '<p class="metin">Projeler şu an yüklenemedi.</p>';
+    return;
+  }
 
   const klasorRengi = {
     'Yayında':    ['#8DB86A', '#5E8263'],
@@ -626,17 +818,17 @@ function projeleriKur() {
     'Yapımda':    ['#F3D36B', '#C9A04A']
   };
 
-  // Görsel alanı: web için tarayıcı, mobil için üç telefon
   function gorselAlani(p) {
+    const gorseller = p.gorseller || [];
     if (p.ekran === 'web') {
-      const gorsel = p.gorseller[0]
-        ? `<img src="${p.gorseller[0]}" alt="${p.ad} ekran görüntüsü">`
-        : `<div class="yer-tutucu">[EKRAN GÖRÜNTÜSÜ]</div>`;
+      const gorsel = gorseller[0]
+        ? `<img src="${kacir(gorseller[0])}" alt="${kacir(p.ad)} ekran görüntüsü">`
+        : `<div class="yer-tutucu">Ekran görüntüsü yakında</div>`;
       return `
         <div class="tarayici">
           <div class="tarayici-bar">
             <span></span><span></span><span></span>
-            <span class="adres">${p.adres}</span>
+            <span class="adres">${kacir(p.adres || p.ad)}</span>
           </div>
           <div class="tarayici-ekran">${gorsel}</div>
         </div>`;
@@ -645,60 +837,51 @@ function projeleriKur() {
       <div class="telefonlar">
         ${[0, 1, 2].map(i => `
           <div class="telefon">
-            ${p.gorseller[i]
-              ? `<img src="${p.gorseller[i]}" alt="${p.ad} ekran ${i + 1}">`
-              : `<div class="yer-tutucu">[EKRAN ${i + 1}]</div>`}
+            ${gorseller[i]
+              ? `<img src="${kacir(gorseller[i])}" alt="${kacir(p.ad)} ekran ${i + 1}">`
+              : `<div class="yer-tutucu">Ekran ${i + 1}</div>`}
           </div>`).join('')}
       </div>`;
   }
 
   function goster(sira) {
     const p = projeler[sira];
-
-    // Soldaki listede seçili olanı işaretle
     liste.querySelectorAll('.dosya').forEach((d, i) => {
       d.setAttribute('aria-current', i === sira ? 'true' : 'false');
     });
 
     detay.innerHTML = `
       <div class="proje-etiketler">
-        <span class="cip-kutu" style="--renk: ${p.durum === 'Yapımda' ? '#FBEFD4' : '#E8F1E0'}">${p.durum}</span>
-        <span class="cip-kutu" style="--renk: #E3EEF5">${p.tur}</span>
-        ${p.rozet ? `<span class="cip-kutu" style="--renk: #FBEFD4">${p.rozet}</span>` : ''}
+        <span class="cip-kutu" style="--renk: ${p.durum === 'Yapımda' ? '#FBEFD4' : '#E8F1E0'}">${kacir(p.durum)}</span>
+        ${p.tur ? `<span class="cip-kutu" style="--renk: #E3EEF5">${kacir(p.tur)}</span>` : ''}
+        ${p.rozet ? `<span class="cip-kutu" style="--renk: #FBEFD4">${kacir(p.rozet)}</span>` : ''}
       </div>
 
       <div class="bolum">
-        <h2 class="proje-adi">${p.ad}</h2>
-        <p class="metin">${p.ozet}</p>
+        <h2 class="proje-adi">${kacir(p.ad)}</h2>
+        ${p.ozet ? `<p class="metin">${kacir(p.ozet)}</p>` : ''}
       </div>
 
-      <div class="sahne-arka" style="background: ${p.renk}">${gorselAlani(p)}</div>
+      <div class="sahne-arka" style="background: ${kacir(p.renk || '#FFE9EE')}">${gorselAlani(p)}</div>
 
-      <div class="proje-bilgi">
-        <div>
-          <h3 class="kucuk-baslik">BENİM ROLÜM</h3>
-          <p class="metin">${p.rol}</p>
-        </div>
-        <div>
-          <h3 class="kucuk-baslik">NE ÖĞRENDİM</h3>
-          <p class="metin">${p.ogrendim}</p>
-        </div>
-      </div>
+      ${p.rol || p.ogrendim ? `
+        <div class="proje-bilgi">
+          ${p.rol ? `<div><h3 class="kucuk-baslik">BENİM ROLÜM</h3><p class="metin">${kacir(p.rol)}</p></div>` : ''}
+          ${p.ogrendim ? `<div><h3 class="kucuk-baslik">NE ÖĞRENDİM</h3><p class="metin">${kacir(p.ogrendim)}</p></div>` : ''}
+        </div>` : ''}
 
-      <div class="bolum">
-        <h3 class="kucuk-baslik">KULLANDIKLARIM</h3>
-        <ul class="teknolojiler">
-          ${p.teknolojiler.map(t => `<li>${t}</li>`).join('')}
-        </ul>
-      </div>
+      ${(p.teknolojiler || []).length ? `
+        <div class="bolum">
+          <h3 class="kucuk-baslik">KULLANDIKLARIM</h3>
+          <ul class="teknolojiler">${p.teknolojiler.map(t => `<li>${kacir(t)}</li>`).join('')}</ul>
+        </div>` : ''}
 
       <div class="proje-butonlar">
-        ${p.canli ? `<a class="buton buton-pembe" href="${p.canli.link}" target="_blank" rel="noopener">${p.canli.etiket} ›</a>` : ''}
-        <a class="buton" href="${p.kod}" target="_blank" rel="noopener">GitHub'da incele</a>
+        ${p.canli_link ? `<a class="buton buton-pembe" href="${kacir(p.canli_link)}" target="_blank" rel="noopener">${kacir(p.canli_etiket || 'Canlı gör')} ›</a>` : ''}
+        ${p.kod_link ? `<a class="buton" href="${kacir(p.kod_link)}" target="_blank" rel="noopener">GitHub'da incele</a>` : ''}
       </div>`;
   }
 
-  // Soldaki klasör listesini oluştur
   liste.innerHTML = projeler.map((p, sira) => {
     const [govde, sekme] = klasorRengi[p.durum] || ['#E4DACA', '#BFB3A0'];
     return `
@@ -709,7 +892,7 @@ function projeleriKur() {
             <rect x="0" y="1" width="12" height="9" fill="${govde}"/>
             <rect x="0" y="3" width="12" height="1" fill="${sekme}"/>
           </svg>
-          <span>${p.ad}</span>
+          <span>${kacir(p.ad)}</span>
         </button>
       </li>`;
   }).join('');
@@ -724,9 +907,12 @@ manzaraCiz();
 odaCiz();
 acilisiKur();
 filtreleriKur();
-galeriKur();
 formuKur();
 projeleriKur();
+kitaplariGetir();
+izlenenleriGetir();
+fotograflariGetir();
+odaDurumlariGetir();
 
 // Odadan patikaya geri dönüş
 const donButon = document.getElementById('patikaya-don');

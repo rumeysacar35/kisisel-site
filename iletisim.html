@@ -58,34 +58,41 @@
           <h1>Bana yaz</h1>
           <p class="metin">[Bir cümle: İş teklifi, proje fikri ya da sadece bir kitap önerisi… Hepsine dönerim.]</p>
 
-          <form id="mektup-formu" class="form">
+                    <form id="mektup-formu" class="form">
             <div class="form-satir">
               <div class="alan">
                 <label for="ad">Adın</label>
-                <input id="ad" name="ad" type="text" autocomplete="name" required>
+                <input id="ad" name="ad" type="text" autocomplete="name" maxlength="100" required>
               </div>
               <div class="alan">
                 <label for="eposta">E-postan</label>
-                <input id="eposta" name="eposta" type="email" autocomplete="email" required>
+                <input id="eposta" name="eposta" type="email" autocomplete="email" maxlength="200" required>
               </div>
             </div>
             <div class="alan">
               <label for="mesaj">Mektubun</label>
-              <textarea id="mesaj" name="mesaj" rows="6" required></textarea>
+              <textarea id="mesaj" name="mesaj" rows="6" maxlength="5000" required></textarea>
             </div>
+
+            <!-- Bot tuzağı: insanlar görmez, botlar doldurur -->
+            <div class="tuzak" aria-hidden="true">
+              <label for="web">Web siten</label>
+              <input id="web" name="web" type="text" tabindex="-1" autocomplete="off">
+            </div>
+
             <div class="form-alt">
               <button class="gonder" type="submit">Mektubu gönder ›</button>
-              <span class="soluk">Genelde [2–3 gün] içinde dönerim.</span>
+              <span class="soluk">Genelde birkaç gün içinde dönerim.</span>
             </div>
+            <p id="mektup-hata" class="soluk" role="alert"></p>
           </form>
 
           <div id="mektup-tamam" class="gonderildi" role="status" hidden>
             <svg width="72" height="58" viewBox="0 0 12 10" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="2" width="12" height="8" fill="#BF7386"/><rect x="1" y="3" width="10" height="6" fill="#E8A6B4"/><rect x="1" y="3" width="1" height="1" fill="#BF7386"/><rect x="2" y="4" width="1" height="1" fill="#BF7386"/><rect x="3" y="5" width="1" height="1" fill="#BF7386"/><rect x="4" y="6" width="1" height="1" fill="#BF7386"/><rect x="7" y="6" width="1" height="1" fill="#BF7386"/><rect x="8" y="5" width="1" height="1" fill="#BF7386"/><rect x="9" y="4" width="1" height="1" fill="#BF7386"/><rect x="10" y="3" width="1" height="1" fill="#BF7386"/><rect x="5" y="6" width="2" height="2" fill="#FBF6EC"/></svg>
-            <p class="buyuk">Mektubun hazır!</p>
-            <p class="metin">E-posta uygulamanda açıldı; göndere basman yeterli. Açılmadıysa bana <a href="mailto:rumeysacar35@gmail.com">rumeysacar35@gmail.com</a> adresinden yazabilirsin.</p>
+            <p class="buyuk">Mektubun yola çıktı!</p>
+            <p class="metin">Tekir onu bana getirecek. Teşekkürler, en kısa sürede dönerim.</p>
             <button id="yeni-mektup" class="gonder" type="button" style="background: var(--krem)">Yeni mektup</button>
           </div>
-        </section>
 
         <aside class="baglantilar">
           <h2 class="bolum-baslik">BENİ BURADA BUL</h2>
@@ -134,6 +141,8 @@
     </nav>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

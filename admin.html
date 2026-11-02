@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Panel · Rumeysa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=VT323&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+  <div class="sayfa ic-sayfa">
+    <header class="ust-bar">
+      <div class="ust-sol">
+        <span class="logo">R.</span>
+        <span class="panel-adi">YÖNETİM PANELİ</span>
+      </div>
+      <div class="ust-sol">
+        <a href="index.html" class="ust-buton" target="_blank" rel="noopener">Siteye git ↗</a>
+        <button id="cikis" class="ust-buton" hidden>Çıkış</button>
+      </div>
+    </header>
+
+    <!-- Giriş -->
+    <main id="giris" class="pencere giris-pencere">
+      <div class="pencere-baslik">
+        <span>GİRİŞ.EXE</span>
+        <span class="pencere-noktalar" aria-hidden="true"><span></span><span></span></span>
+      </div>
+      <div class="pencere-icerik">
+        <form id="giris-formu" class="form">
+          <div class="alan">
+            <label for="eposta">E-posta</label>
+            <input id="eposta" name="eposta" type="email" autocomplete="username" required>
+          </div>
+          <div class="alan">
+            <label for="sifre">Şifre</label>
+            <input id="sifre" name="sifre" type="password" autocomplete="current-password" required>
+          </div>
+          <button class="gonder" type="submit">Giriş yap ›</button>
+          <p id="giris-hata" class="hata" role="alert"></p>
+        </form>
+      </div>
+    </main>
+
+    <!-- Panel -->
+    <main id="panel" class="pencere" hidden>
+      <div class="pencere-baslik">
+        <span>PANEL.EXE</span>
+        <span class="pencere-noktalar" aria-hidden="true"><span></span><span></span></span>
+      </div>
+      <div class="pencere-icerik liste-icerik">
+        <div id="panel-sekmeleri" class="sekmeler" role="group" aria-label="Bölümler">
+          <button data-tablo="kitaplar" aria-pressed="true">Kitaplar</button>
+          <button data-tablo="izlenenler" aria-pressed="false">Dizi &amp; Film</button>
+          <button data-tablo="fotograflar" aria-pressed="false">Fotoğraflar</button>
+          <button data-tablo="projeler" aria-pressed="false">Projeler</button>
+          <button data-tablo="mesajlar" aria-pressed="false">Mesajlar</button>
+        </div>
+
+        <p id="durum-mesaji" class="durum-mesaji" role="status"></p>
+
+        <div class="panel-duzen">
+          <section id="form-kolon" class="kart panel-form">
+            <div class="kart-baslik" id="form-baslik">YENİ KAYIT</div>
+            <form id="kayit-formu" class="form kart-govde"></form>
+          </section>
+
+          <section class="panel-liste">
+            <h2 class="bolum-baslik">KAYITLAR</h2>
+            <ul id="kayit-listesi" class="kayitlar"></ul>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

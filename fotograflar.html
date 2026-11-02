@@ -56,43 +56,8 @@
           <p class="metin soluk">[Bir cümle: Gezdiğim yerlerden ve sıradan günlerin güzel anlarından.]</p>
         </div>
 
-        <ul class="galeri">
-          <li><button class="polaroid" style="--egim: -3deg; --bant: #E8A6B4" aria-label="Fotoğraf 1, büyüt">
-            <span class="foto" style="--gok: #EDB7B9; --gunes: #F8E3A4; --tepe: #D98FA0; --zemin: #A9C4A0"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: 2deg; --bant: #A9C6D6" aria-label="Fotoğraf 2, büyüt">
-            <span class="foto" style="--gok: #A9C6D6; --gunes: #FBF6EC; --tepe: #7FA3B8; --zemin: #8DB86A"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: -1.5deg; --bant: #F3D36B" aria-label="Fotoğraf 3, büyüt">
-            <span class="foto" style="--gok: #F3C9B6; --gunes: #F3D36B; --tepe: #C8743A; --zemin: #A85C2A"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: 2.5deg; --bant: #E8A6B4" aria-label="Fotoğraf 4, büyüt">
-            <span class="foto" style="--gok: #B5CFE8; --gunes: #FBF6EC; --tepe: #6E9C6A; --zemin: #4F7E4A"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: -2deg; --bant: #A9C6D6" aria-label="Fotoğraf 5, büyüt">
-            <span class="foto" style="--gok: #E4DACA; --gunes: #E8A6B4; --tepe: #C9A04A; --zemin: #8A6243"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: 1deg; --bant: #F3D36B" aria-label="Fotoğraf 6, büyüt">
-            <span class="foto" style="--gok: #9BBCDF; --gunes: #F8E3A4; --tepe: #5E7FA0; --zemin: #7FB069"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: -2.5deg; --bant: #E8A6B4" aria-label="Fotoğraf 7, büyüt">
-            <span class="foto" style="--gok: #FFE9EE; --gunes: #F3D36B; --tepe: #D98FA0; --zemin: #E8A6B4"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: 1.5deg; --bant: #A9C6D6" aria-label="Fotoğraf 8, büyüt">
-            <span class="foto" style="--gok: #C9DCE8; --gunes: #FBF6EC; --tepe: #8DB86A; --zemin: #5E8263"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
-          <li><button class="polaroid" style="--egim: -1deg; --bant: #F3D36B" aria-label="Fotoğraf 9, büyüt">
-            <span class="foto" style="--gok: #F1E8D8; --gunes: #C8743A; --tepe: #7A9E7E; --zemin: #C9A04A"><span class="yer-yazi">[FOTOĞRAF]</span></span>
-            <span class="foto-yazi">[YER · TARİH]</span>
-          </button></li>
+        <ul class="galeri" id="galeri">
+          <li class="bos">Yükleniyor…</li>
         </ul>
 
       </div>
@@ -123,6 +88,8 @@
     </div>
   </dialog>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

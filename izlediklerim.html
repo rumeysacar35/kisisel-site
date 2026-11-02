@@ -63,73 +63,20 @@
           </div>
         </div>
 
-        <section class="film-seridi" aria-label="Bu ara izliyorum">
+                <section id="bu-ara-izliyorum" class="film-seridi" aria-label="Bu ara izliyorum" hidden>
           <div class="film-icerik">
-            <div class="sahne" aria-hidden="true"><span>[AFİŞ / SAHNE GÖRSELİ]</span></div>
+            <div class="sahne" aria-hidden="true"></div>
             <div class="one-cikan-metin">
               <span class="rozet">BU ARA İZLİYORUM</span>
-              <h2>[DİZİ / FİLM ADI]</h2>
-              <p class="soluk">[Sezon 1 · Bölüm 4] · [PLATFORM]</p>
-              <p class="metin">[Neden izliyorsun, şimdilik nasıl? Bir iki cümle.]</p>
+              <h2></h2>
+              <p class="soluk nerede"></p>
+              <p class="metin izlenen-not"></p>
             </div>
           </div>
         </section>
 
         <ul class="kartlar kartlar-afis" id="izleme-listesi">
-          <li class="afis-kart" data-tur="dizi">
-            <div class="afis" style="--gok: #EDB7B9; --gunes: #F8E3A4; --zemin: #A9C4A0" aria-hidden="true"><span class="tur-etiketi">Dizi</span></div>
-            <div class="afis-bilgi">
-              <h3>[ADI]</h3>
-              <span class="soluk">[YIL] · [TÜR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 5 kalp">♥♥♥♥♥</span>
-              <p class="not">[Tek cümle]</p>
-            </div>
-          </li>
-          <li class="afis-kart" data-tur="film">
-            <div class="afis" style="--gok: #7FA3B8; --gunes: #FBF6EC; --zemin: #5E8263" aria-hidden="true"><span class="tur-etiketi">Film</span></div>
-            <div class="afis-bilgi">
-              <h3>[ADI]</h3>
-              <span class="soluk">[YIL] · [TÜR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 4 kalp">♥♥♥♥♡</span>
-              <p class="not">[Tek cümle]</p>
-            </div>
-          </li>
-          <li class="afis-kart" data-tur="dizi">
-            <div class="afis" style="--gok: #C9A04A; --gunes: #FBF6EC; --zemin: #A85C2A" aria-hidden="true"><span class="tur-etiketi">Dizi</span></div>
-            <div class="afis-bilgi">
-              <h3>[ADI]</h3>
-              <span class="soluk">[YIL] · [TÜR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 4 kalp">♥♥♥♥♡</span>
-              <p class="not">[Tek cümle]</p>
-            </div>
-          </li>
-          <li class="afis-kart" data-tur="film">
-            <div class="afis" style="--gok: #7D5A6E; --gunes: #F3D36B; --zemin: #3B4252" aria-hidden="true"><span class="tur-etiketi">Film</span></div>
-            <div class="afis-bilgi">
-              <h3>[ADI]</h3>
-              <span class="soluk">[YIL] · [TÜR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 5 kalp">♥♥♥♥♥</span>
-              <p class="not">[Tek cümle]</p>
-            </div>
-          </li>
-          <li class="afis-kart" data-tur="dizi">
-            <div class="afis" style="--gok: #A9C6D6; --gunes: #F3D36B; --zemin: #8DB86A" aria-hidden="true"><span class="tur-etiketi">Dizi</span></div>
-            <div class="afis-bilgi">
-              <h3>[ADI]</h3>
-              <span class="soluk">[YIL] · [TÜR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 3 kalp">♥♥♥♡♡</span>
-              <p class="not">[Tek cümle]</p>
-            </div>
-          </li>
-          <li class="afis-kart" data-tur="film">
-            <div class="afis" style="--gok: #D98FA0; --gunes: #FBF6EC; --zemin: #BF7386" aria-hidden="true"><span class="tur-etiketi">Film</span></div>
-            <div class="afis-bilgi">
-              <h3>[ADI]</h3>
-              <span class="soluk">[YIL] · [TÜR]</span>
-              <span class="kalpler" aria-label="5 üzerinden 4 kalp">♥♥♥♥♡</span>
-              <p class="not">[Tek cümle]</p>
-            </div>
-          </li>
+          <li class="bos">Yükleniyor…</li>
         </ul>
 
       </div>
@@ -145,6 +92,8 @@
     </nav>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

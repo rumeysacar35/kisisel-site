@@ -1,0 +1,93 @@
+/* ===== Yönetim paneli ===== */
+.panel-adi {
+  font-family: 'Pixelify Sans', monospace;
+  font-size: 18px;
+  letter-spacing: 3px;
+  color: var(--krem-koyu);
+}
+.giris-pencere {
+  width: 100%;
+  max-width: 480px;
+  margin: 40px auto 0;
+}
+
+.alan select {
+  width: 100%;
+  min-height: 46px;
+  padding: 8px 12px;
+  border: 3px solid var(--lacivert);
+  background: #FFFDF8;
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+  color: var(--lacivert);
+}
+.alan input[type="color"] { padding: 4px; height: 46px; cursor: pointer; }
+.alan small { font-size: 17px; color: var(--gri); }
+
+.hata { margin: 0; min-height: 1em; color: var(--pembe-koyu); }
+.durum-mesaji { margin: 0; min-height: 1.2em; color: var(--mavi); }
+
+.panel-duzen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  align-items: flex-start;
+}
+.panel-form { flex: 1 1 340px; min-width: 0; }
+.panel-liste {
+  flex: 2 1 420px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-butonlar { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.kayitlar {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.kayit {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 3px solid var(--lacivert);
+  background: var(--krem);
+  box-shadow: 3px 3px 0 var(--lacivert);
+}
+.kayit b { display: block; font-weight: normal; font-size: 22px; }
+.kayit small { font-size: 18px; color: var(--gri); }
+.kayit-butonlar { display: flex; gap: 8px; }
+.kayit-butonlar button,
+.ikincil {
+  min-height: 40px;
+  padding: 0 12px;
+  border: 2px solid var(--lacivert);
+  background: var(--krem-koyu);
+  font-family: 'VT323', monospace;
+  font-size: 20px;
+  color: var(--lacivert);
+  cursor: pointer;
+}
+.kayit-butonlar button:hover,
+.ikincil:hover { background: #FFE9EE; }
+.kayit-butonlar button[data-islem="sil"] { color: var(--pembe-koyu); }
+
+/* Mesajlar */
+.mesaj { flex-direction: column; align-items: stretch; }
+.mesaj.yeni { background: #FFE9EE; }
+.mesaj p {
+  margin: 0;
+  font-family: 'Space Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
