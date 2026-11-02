@@ -4,9 +4,128 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rumeysa</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;700&family=VT323&family=Space+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <h1>Merhaba, ben Rumeysa.</h1>
-  <p>Hikâyeleri, yerleri ve güzel anları biriktirip dijitalleştiriyorum.</p>
+      <div class="gokyuzu" aria-hidden="true">
+    <svg class="bulut" style="top: 40px" width="280" height="84" viewBox="0 0 40 12" shape-rendering="crispEdges">
+      <rect x="10" y="0" width="12" height="3" fill="#C3CFDB"/><rect x="22" y="2" width="8" height="3" fill="#C3CFDB"/>
+      <rect x="3" y="3" width="34" height="3" fill="#C3CFDB"/><rect x="0" y="6" width="40" height="4" fill="#A9B8C8"/>
+      <rect x="2" y="10" width="36" height="2" fill="#8798AC"/>
+    </svg>
+    <svg class="bulut bulut-yavas" style="top: 190px" width="200" height="60" viewBox="0 0 40 12" shape-rendering="crispEdges">
+      <rect x="10" y="0" width="12" height="3" fill="#C3CFDB"/><rect x="22" y="2" width="8" height="3" fill="#C3CFDB"/>
+      <rect x="3" y="3" width="34" height="3" fill="#C3CFDB"/><rect x="0" y="6" width="40" height="4" fill="#A9B8C8"/>
+      <rect x="2" y="10" width="36" height="2" fill="#8798AC"/>
+    </svg>
+    <svg class="yagmur" width="100%" height="100%" shape-rendering="crispEdges">
+      <defs>
+        <pattern id="damla" width="72" height="160" patternUnits="userSpaceOnUse">
+          <rect x="6" y="8" width="2" height="12" fill="#E3EDF5"/><rect x="30" y="62" width="2" height="12" fill="#E3EDF5"/>
+          <rect x="52" y="20" width="2" height="12" fill="#E3EDF5"/><rect x="18" y="112" width="2" height="12" fill="#E3EDF5"/>
+          <rect x="62" y="130" width="2" height="12" fill="#E3EDF5"/>
+        </pattern>
+      </defs>
+      <g class="yagmur-dusus"><rect width="100%" height="4000" fill="url(#damla)"/></g>
+    </svg>
+  </div>
+    <!-- ===== AÇILIŞ EKRANI ===== -->
+  <section id="acilis" class="sayfa acilis">
+    <div class="kutu yukleniyor">
+      <div class="yukleme-cubugu"><div class="yukleme-dolum"></div></div>
+      <p>YÜKLENİYOR<span class="yanip">...</span></p>
+    </div>
+
+    <div class="pencere acilis-pencere">
+      <div class="pencere-baslik">RUMEYSA.EXE</div>
+      <div class="manzara">
+        <svg id="manzara" viewBox="0 0 160 100" shape-rendering="crispEdges" aria-hidden="true"></svg>
+
+        <button id="basla" class="basla-butonu">BAŞLA</button>
+
+        <div class="uyari">
+          <div class="uyari-baslik">UYARI</div>
+          <div class="uyari-icerik">
+            <p id="uyari-metni">Bu patika seni bana çıkarıyor. Yürüyelim mi?</p>
+            <div class="uyari-butonlar">
+              <button id="evet">Evet</button>
+              <button id="hayir">Hayır</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="kutu ipucu">PATİKAYA ADIM AT <span class="yanip">▮</span></p>
+  </section>
+
+    <!-- ===== ODA ===== -->
+  <section id="oda" class="sayfa oda-ekrani" hidden>
+    <header class="ust-bar">
+      <div class="ust-sol">
+        <span class="logo">R.</span>
+        <button id="patikaya-don" class="ust-buton">← Patikaya dön</button>
+      </div>
+      <div class="dil-secimi">
+        <button class="dil aktif">TR</button>
+        <button class="dil" aria-label="İngilizce (yakında)" title="Yakında">EN</button>
+      </div>
+    </header>
+
+    <main class="oda-duzen">
+      <section class="pencere merhaba">
+        <div class="pencere-baslik">MERHABA.TXT</div>
+        <div class="pencere-icerik">
+          <p class="ust-yazi">MERHABA, BEN</p>
+          <h1>Rumeysa</h1>
+          <p class="unvan">MOBİL GELİŞTİRİCİ&nbsp; FOTOĞRAFÇI</p>
+          <p class="slogan">Hikâyeleri, yerleri ve güzel anları biriktirip dijitalleştiriyorum.</p>
+          <div class="durum">▸ Şu an okuyorum: [KİTAP ADI]</div>
+          <div class="durum">▸ İzliyorum: [DİZİ ADI]</div>
+          <p class="ipucu-yazi">Kediye dokun · Odadaki eşyaları keşfet</p>
+        </div>
+      </section>
+
+      <section class="pencere oda-pencere">
+        <div class="pencere-baslik">ODA.EXE</div>
+        <div class="oda-sahne">
+          <svg id="oda-svg" viewBox="0 0 160 140" shape-rendering="crispEdges" role="img" aria-label="Rumeysa'nın odası">
+            <defs>
+              <clipPath id="cam-alani"><rect x="58" y="12" width="44" height="38"/></clipPath>
+              <filter id="parilti" x="-20%" y="-20%" width="140%" height="140%">
+                <feMorphology in="SourceAlpha" operator="dilate" radius="0.8" result="kalin"/>
+                <feFlood flood-color="#FFF1A8" result="renk"/>
+                <feComposite in="renk" in2="kalin" operator="in" result="kontur"/>
+                <feGaussianBlur in="kontur" stdDeviation="1.6" result="isik"/>
+                <feMerge>
+                  <feMergeNode in="isik"/><feMergeNode in="isik"/>
+                  <feMergeNode in="kontur"/><feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+          </svg>
+          <button id="kedi-buton" class="kedi-buton" aria-label="Kediyi uyandır"></button>
+          <div id="kedi-balon" class="kedi-balon" hidden>
+            <strong>Miyav, hoş geldin!</strong><br>Bir eşyaya dokun, seni gezdireyim.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <nav class="gorev-cubugu" aria-label="Bölümler">
+      <a class="dock" href="hakkimda.html"><svg width="36" height="36" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="1" width="6" height="8" fill="#D98FA0"/><rect x="7" y="1" width="1" height="8" fill="#FBF6EC"/><rect x="2" y="1" width="1" height="8" fill="#BF7386"/><rect x="4" y="4" width="2" height="1" fill="#FBF6EC"/><rect x="4" y="5" width="2" height="1" fill="#FBF6EC"/><rect x="6" y="8" width="1" height="2" fill="#C9A04A"/></svg>Hakkımda</a>
+      <a class="dock" href="projelerim.html"><svg width="36" height="36" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true"><rect x="1" y="1" width="8" height="6" fill="#3B4252"/><rect x="2" y="2" width="6" height="4" fill="#1E3530"/><rect x="3" y="3" width="3" height="1" fill="#7FB069"/><rect x="4" y="4" width="3" height="1" fill="#E8A6B4"/><rect x="0" y="7" width="10" height="2" fill="#8C94A3"/></svg>Projelerim</a>
+      <a class="dock" href="okuduklarim.html"><svg width="36" height="36" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true"><rect x="1" y="2" width="2" height="7" fill="#7A9E7E"/><rect x="3" y="1" width="2" height="8" fill="#7FA3B8"/><rect x="5" y="3" width="2" height="6" fill="#C8743A"/><rect x="7" y="2" width="2" height="7" fill="#D98FA0"/><rect x="0" y="9" width="10" height="1" fill="#8A6243"/></svg>Okuduklarım</a>
+      <a class="dock" href="izlediklerim.html"><svg width="36" height="36" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true"><rect x="1" y="0" width="3" height="1" fill="#5E5143"/><rect x="0" y="1" width="5" height="3" fill="#5E5143"/><rect x="1" y="4" width="3" height="1" fill="#5E5143"/><rect x="2" y="2" width="1" height="1" fill="#C9A04A"/><rect x="5" y="1" width="3" height="1" fill="#5E5143"/><rect x="5" y="2" width="4" height="2" fill="#5E5143"/><rect x="6" y="4" width="2" height="1" fill="#5E5143"/><rect x="6" y="2" width="1" height="1" fill="#C9A04A"/><rect x="0" y="5" width="8" height="4" fill="#3B4252"/><rect x="0" y="5" width="8" height="1" fill="#5A6478"/><rect x="1" y="7" width="2" height="1" fill="#8C94A3"/><rect x="8" y="6" width="2" height="2" fill="#F3D36B"/></svg>İzlediklerim</a>
+      <a class="dock" href="fotograflar.html"><svg width="36" height="36" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true"><rect x="2" y="2" width="3" height="1" fill="#3B4252"/><rect x="0" y="3" width="10" height="6" fill="#3B4252"/><rect x="3" y="4" width="4" height="4" fill="#A9C6D6"/><rect x="4" y="5" width="2" height="2" fill="#1F2A44"/><rect x="8" y="4" width="1" height="1" fill="#FBF6EC"/></svg>Fotoğraflar</a>
+      <a class="dock" href="iletisim.html"><svg width="36" height="36" viewBox="0 0 10 10" shape-rendering="crispEdges" aria-hidden="true"><rect x="0" y="2" width="10" height="7" fill="#BF7386"/><rect x="1" y="3" width="8" height="5" fill="#E8A6B4"/><rect x="1" y="3" width="1" height="1" fill="#BF7386"/><rect x="2" y="4" width="1" height="1" fill="#BF7386"/><rect x="3" y="5" width="1" height="1" fill="#BF7386"/><rect x="6" y="5" width="1" height="1" fill="#BF7386"/><rect x="7" y="4" width="1" height="1" fill="#BF7386"/><rect x="8" y="3" width="1" height="1" fill="#BF7386"/><rect x="4" y="5" width="2" height="2" fill="#FBF6EC"/></svg>İletişim</a>
+    </nav>
+  </section>
+
+  <script src="js/main.js"></script>
+    </div>
+  </div>
 </body>
 </html>
